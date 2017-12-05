@@ -36,16 +36,17 @@ public class AlgoritmoGenetico {
         Semaforo sem;
          
         for (int i = 0; i < semaforos.size(); i++){
+            //Break adicionado para conter expetion
             if (i+1 == semaforos.size()){
                 break;
             }
             sem = (Semaforo)semaforos.get(i+1);
-            
+             
             tempoEsvazia = sem.getQtdCarros() * 0.5;
             
             resultado = semaforos.get(i).getTempoTotal() - tempoEsvazia;
             
-            if (Math.abs(resultado) >= 0 && Math.abs(resultado) < 4){
+            if (Math.abs(resultado) >= 0 && Math.abs(resultado) <= 4){
                 semaforos.get(i).setFitness(Math.abs(resultado));
                
             }
@@ -57,9 +58,15 @@ public class AlgoritmoGenetico {
         Random gerador = new Random();
         
         for(int i = 0; i < semaforos.size(); i++){
-            if(semaforos.get(i).getFitness() > 3){
+            
+            if (i+1 == semaforos.size()){
+                break;
+            }
+            
+            if(semaforos.get(i).getFitness() > 4){
                 double valor = 0;
-                valor = (double)gerador.nextInt(60)+1;
+                valor = (double)gerador.nextInt(120)+1;
+                //valor = (double)gerador.nextInt();
                 semaforos.get(i).setTempoTotal(valor);
             }
         }

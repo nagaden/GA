@@ -456,49 +456,111 @@ public class GA {
         s71.setTempoTotal(59);
         semaforos.add(s71); 
        
+       // for (int i = 0; i < semaforos.size(); i++){
+         //  Semaforo sem = new Semaforo();
+         //  sem = (Semaforo)semaforos.get(i);
+          
+         //  System.out.println(sem.getNome() + "; " + sem.getQtdCarros() + "; " + sem.getTempoTotal() + "; " + sem.getFitness());
+        //}
         
         
-        for(int i = 0; i < semaforos.size(); i++){
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        
+        
+        double tempoGastoB = 0;
+        double qtdTotalCarrosB = 0;
+        double tempoAGB = 0;
+        Semaforo semAG;
+        for(int x = 0; x < semaforos.size(); x++){
+            if(x + 1 == semaforos.size()){
+                break;
+            }
+            
+            semAG = (Semaforo)semaforos.get(x);
+            qtdTotalCarrosB = qtdTotalCarrosB + semAG.getQtdCarros();
+            tempoGastoB = tempoGastoB + (semAG.getQtdCarros() * semAG.getTempoTotal());
+            tempoAGB = tempoGastoB/qtdTotalCarrosB;
+            
+        }
+        
+        
+        //Iterando minhas geracoes
+        for(int i = 0; i < 100; i++){
             semaforos = ag.GetFitness(semaforos);
             semaforos = ag.Mutacao(semaforos);
+            
+            for (int iu = 0; iu < semaforos.size(); iu++){
+            Semaforo sem = new Semaforo();
+            sem = (Semaforo)semaforos.get(iu);
+          
+                    System.out.println("Semaforo > " + sem.getNome() + "; quantidade de carros parados " + sem.getQtdCarros() + "; Tempo parado " + sem.getTempoTotal() + "; Fitness " + sem.getFitness());
+            }
+            
+            System.out.println();
+            System.out.println("----------------------------------------------------------- GERACAO " + i + " -----------------------------------------------------------");
+            System.out.println();
         } 
-                
-        
-       
-      // while(semaforosOtimizados.size() <= 71){
-       //    semaforosOtimizados = ag.GetFitness(semaforos, semaforosOtimizados);
-       //    semaforos = ag.Mutacao(semaforos);
-        //}
-    
-        
+         
 
+        //Apos aplicar o AG preciso descobrir afinal com a media da melhor configuracao para essa populacao
+        double melhorTempo = 0;
+        Semaforo s;
+        for(int u = 0; u < semaforos.size(); u++){
+            
+            if(u + 1 == semaforos.size()){
+                break;
+            }
+            s = (Semaforo)semaforos.get(u);
+            
+            melhorTempo = melhorTempo + s.getTempoTotal();
+            
+            
+        }
+        melhorTempo = melhorTempo/(semaforos.size()-1);
+        
+        
+       //Display do resultado apos AG
+     //  for (int i = 0; i < semaforos.size(); i++){
+         //  Semaforo sem = new Semaforo();
+         //  sem = (Semaforo)semaforos.get(i);
+          
+        //   System.out.println("Semaforo > " + sem.getNome() + "; quantidade de carros parados " + sem.getQtdCarros() + "; Tempo parado " + sem.getTempoTotal() + "; Fitness " + sem.getFitness());
+      // }
        
        
-       
-       
-       for (int i = 0; i < semaforos.size(); i++){
-           Semaforo sem;
-           sem = (Semaforo)semaforos.get(i);
-           System.out.println(sem.getNome() + " Qtd carros " + sem.getQtdCarros() + " Tempo " + sem.getTempoTotal() + " fitness " + sem.getFitness());
+        //Calculo do tempo medio gasto apos aplicacao do AG
+        double tempoGasto = 0;
+        double qtdTotalCarros = 0;
+        double tempoComAG = 0;
+        Semaforo se;
+       for(int d = 0; d < semaforos.size(); d++){
+            if(d + 1 == semaforos.size()){
+                break;
+            }
+            se = (Semaforo)semaforos.get(d);
+            qtdTotalCarros = qtdTotalCarros + se.getQtdCarros();
+            tempoGasto = tempoGasto + (se.getQtdCarros() * se.getTempoTotal());
        }
+       tempoComAG = tempoGasto/qtdTotalCarros;
        
-       //Thread.sleep(5000);
+       System.out.println("Melhor configuracao de tempo aplicado apos AG " + Math.round(melhorTempo));
+       System.out.println("Tempo médio gasto por veiculo sem AG: " + Math.round(Math.abs(tempoAGB)) + " carros " + qtdTotalCarros);
+       System.out.println("Tempo médio gasto por veiculo após AG: " + Math.round(Math.abs(tempoComAG)) + " carros " + qtdTotalCarros);
        
        
        
        
-       //long endTime = System.currentTimeMillis();
        
-       //String diff = millisToShortDHMS(endTime - tempoSimulacao);
-       //System.out.println(diff);
-       //System.out.print(ag.GetFitness(s.getQtdCarros(),s.getTempoTotal()));
+       
        
        
        
        
     }
     
-      public static String millisToShortDHMS(long duration) {
+    public static String millisToShortDHMS(long duration) {
     String res = "";
     long days  = TimeUnit.MILLISECONDS.toDays(duration);
     long hours = TimeUnit.MILLISECONDS.toHours(duration)
